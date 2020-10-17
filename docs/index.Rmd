@@ -1,7 +1,30 @@
+---
+title: |
+  Ein schicker Titel
+subtitle: "Ein schicker Untertitel"
+author: "Dr. Eva Brugger (@labruggere)"
+institute: "Universität Zurich"
+date: "Fall 2020"
+output:
+  xaringan::moon_reader:
+    css: ["robot-fonts","more.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+      beforeInit: "https://platform.twitter.com/widgets.js"
+---
+
+## Wordcloud
+
+
+.center2[
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(data.table)
 library(quanteda)
-library(ggplot2)
-res <- fread("data/responses.csv")
+res <- fread("../data/responses.csv")
 names(res) <- c("timestamp",
                 "prepare",
                 "reading",
@@ -17,15 +40,20 @@ names(res) <- c("timestamp",
 words <- res$school[nchar(res$school) < 100 & nchar(res$school) > 0]
 words <- gsub("und|unterricht|wissenschaften|bildnerisches","",
               do.call("c", strsplit(words,";")))
-
-textplot_wordcloud(dfm(words),
+textplot_wordcloud(dfm(words, remove_punct = TRUE),
                    min_count = 1,
-                   min_size = 2,
-                   color = viridis::viridis(5),
-                   fixed_aspect = FALSE,
-                   rotation = 0)
+                   min_size = 2.5,
+                   color = viridis::viridis(5))
+```
+]
 
 
+---
+
+## Skills
+
+```{r, echo=FALSE, warning=FALSE, fig.width=15}
+library(ggplot2)
 res_num <- res[, .SD,
                .SDcols = sapply(res, is.numeric)]
 res_num[,id := 1:nrow(res_num)]
@@ -36,7 +64,7 @@ res_m <- melt(res_num,id.vars = "id")
 gg <- ggplot(data = res_m)
 gg +
   geom_bar(aes(x = as.factor(value), fill = variable)) +
-  facet_wrap("variable", nrow = 2) +
+  facet_wrap("variable", nrow = 2) + 
   theme_minimal() +
   theme(panel.grid.major.x = element_blank(),
         panel.spacing = unit(4, "lines"),
@@ -45,10 +73,16 @@ gg +
                    limits=factor(1:5)) +
   scale_fill_viridis_d()
 
+```
+
+---
+
+## Qualitative Antworten
+
+
+```{r, echo = FALSE}
 
 unique(res$missing[res$missing != ""])
 
-
-
-
+```
 
