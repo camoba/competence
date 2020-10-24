@@ -1,10 +1,10 @@
 ---
 title: |
-  Ein schicker Titel
-subtitle: "Ein schicker Untertitel"
-author: "Dr. Eva Brugger (@labruggere)"
-institute: "Universität Zurich"
-date: "Fall 2020"
+  Kompetenzen im Geschichtsstudium
+subtitle: "Umfrage unter BA-Studierenden an der UZH"
+author: "Dr. Eva Brugger (@labruggere), Jonas Plüss (@JoPluess)"
+institute: "Universität Zürich"
+date: "02. November 2020"
 output:
   xaringan::moon_reader:
     css: ["robot-fonts","more.css"]
@@ -17,10 +17,7 @@ output:
       beforeInit: "https://platform.twitter.com/widgets.js"
 ---
 
-## Wordcloud
 
-
-.center2[
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(data.table)
 library(quanteda)
@@ -37,20 +34,33 @@ names(res) <- c("timestamp",
                 "school")
 
 
-words <- res$school[nchar(res$school) < 100 & nchar(res$school) > 0]
-words <- gsub("und|unterricht|wissenschaften|bildnerisches","",
-              do.call("c", strsplit(words,";")))
-textplot_wordcloud(dfm(words, remove_punct = TRUE),
-                   min_count = 1,
-                   min_size = 2.5,
-                   color = viridis::viridis(5))
+
 ```
-]
+
+## Umfrage
+
+- Onlineumfrage unter BA-Studierenden der UZH im HS 2020
+- 58 Teilnehmer*innen
+- Umfragezeitraum: 1.-10. Oktober 2020
+
+---
+
+## Kompetenzen
+Kompetenzen | Mittelwert
+ -------- |  ----------
+Vorbereitung |
+Lesen | 
+Lesen fremdsprachiger Texte |
+Arbeiten im Team | 
+Kritische Postitionen entwickeln|
+Selbstständiges Arbeiten |
+Forschungsfragen entwickeln |
+
 
 
 ---
 
-## Skills
+## Kompetenzen
 
 ```{r, echo=FALSE, warning=FALSE, fig.width=15}
 library(ggplot2)
@@ -74,6 +84,26 @@ gg +
   scale_fill_viridis_d()
 
 ```
+---
+
+
+## Wordcloud
+
+
+.center2[
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+words <- res$school[nchar(res$school) < 100 & nchar(res$school) > 0]
+words <- gsub("und|unterricht|wissenschaften|bildnerisches","",
+              do.call("c", strsplit(words,";")))
+textplot_wordcloud(dfm(words, remove_punct = TRUE),
+                   min_count = 1,
+                   min_size = 2.5,
+                   color = viridis::viridis(5))
+```
+]
+
 
 ---
 
@@ -85,4 +115,23 @@ gg +
 unique(res$missing[res$missing != ""])
 
 ```
+
+
+---
+
+## shizzle
+
+- moo
+- mmooooo
+
+
+---
+
+## shizzle
+
+- **moo**
+- mmooooo
+
+
+
 
