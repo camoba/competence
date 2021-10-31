@@ -2,9 +2,9 @@
 title: |
   Kompetenzen im Geschichtsstudium
 subtitle: "Umfrage unter BA-Studierenden an der UZH"
-author: "Dr. Eva Brugger (@labruggere), Jonas Plüss (@JoPluess)"
+author: "Dr. Eva Brugger (@labruggere)"
 institute: "Universität Zürich"
-date: "02. November 2020"
+date: "02. November 2020/01.November 2021"
 output:
   xaringan::moon_reader:
     css: ["robot-fonts","more.css"]
@@ -49,7 +49,11 @@ avg <- res_m[, list(avg = mean(value)), variable]
 ## Umfrage
 
 - Onlineumfrage unter BA-Studierenden der UZH im HS 2020
+
+
 - 58 Teilnehmer*innen
+
+
 - Umfragezeitraum: 1.-10. Oktober 2020
 
 
@@ -57,45 +61,37 @@ avg <- res_m[, list(avg = mean(value)), variable]
 ---
 
 
-## Kompetenzen
 
-Kompetenzen | Mittelwert
- -------- |  ----------
-Vorbereitung |
-Lesen | 
-Lesen fremdsprachiger Texte |
-Arbeiten im Team | 
-Kritische Postitionen entwickeln|
-Selbstständiges Arbeiten |
-Forschungsfragen entwickeln |
 
----
+## Relevante Schulfächer
 
-## Durchschnittliche Einschätzung der an der Schule erworbenenen Fähigkeiten
 
-```{r,echo=FALSE, warning=FALSE,message=FALSE}
-gg_avg <- ggplot(data = avg)
-gg_avg + geom_bar(aes(x = variable,
-                      y = avg),
-                  stat = "identity") +
-  coord_flip() +
-  theme_minimal() +
-  theme(panel.grid.major.x = element_blank(),
-        panel.spacing = unit(4, "lines"),
-        text = element_text(size=15))
+.center2[
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
+
+words <- res$school[nchar(res$school) < 100 & nchar(res$school) > 0]
+words <- gsub("und|unterricht|wissenschaften|bildnerisches|-","",
+              do.call("c", strsplit(words,";")))
+textplot_wordcloud(dfm(words, remove_punct = TRUE),
+                   min_count = 1,
+                   min_size = 2.5,
+                   color = viridis::viridis(5))
 ```
+]
+
+
+
 
 
 ---
 
 
-## Häufigkeiten der Antworten im Bezug auf Lesen
+## Vorbereitung aufs Geschichtsstudium allgemein
 
 ```{r, echo=FALSE, warning=FALSE, fig.width=15}
 library(ggplot2)
-gg_read <- ggplot(data = res_m[variable %in% c("prepare",
-                                          "reading","foreign"),])
+gg_read <- ggplot(data = res_m[variable %in% c("prepare"),])
 gg_read +
   geom_bar(aes(x = as.factor(value), fill = variable)) +
   facet_wrap("variable", nrow = 1) +
@@ -113,11 +109,33 @@ gg_read +
 ---
 
 
-## Häufigkeiten der Antworten im Bezug auf Arbeiten im Team
+
+## Lesekompetenzen und Teamfähigkeit
 
 ```{r, echo=FALSE, warning=FALSE, fig.width=15}
 library(ggplot2)
-gg_soft <- ggplot(data = res_m[variable %in% c("team", "critique","self"),])
+gg_read <- ggplot(data = res_m[variable %in% c("reading","foreign", "team"),])
+gg_read +
+  geom_bar(aes(x = as.factor(value), fill = variable)) +
+  facet_wrap("variable", nrow = 1) +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.spacing = unit(4, "lines"),
+        legend.position = "none",
+        text = element_text(size=15)) +
+  scale_x_discrete(name ="Skill",
+                   limits=factor(1:5)) +
+  scale_fill_viridis_d()
+```
+
+---
+
+  
+## Wissenschaftliches Arbeiten
+
+```{r, echo=FALSE, warning=FALSE, fig.width=15}
+library(ggplot2)
+gg_soft <- ggplot(data = res_m[variable %in% c("critique","self", "research"),])
 
 gg_soft +
   geom_bar(aes(x = as.factor(value), fill = variable)) +
@@ -134,51 +152,49 @@ gg_soft +
 
 ```
 
----
 
-## Häufigkeiten der Antworten im Bezug auf wissenschaftliches Arbeiten
-
-```{r, echo=FALSE, warning=FALSE, fig.width=15}
-library(ggplot2)
-gg_soft <- ggplot(data = res_m[variable %in% c("research"),])
-
-gg_soft +
-  geom_bar(aes(x = as.factor(value), fill = variable)) +
-  facet_wrap("variable", nrow = 1) +
-  theme_minimal() +
-  theme(panel.grid.major.x = element_blank(),
-        panel.spacing = unit(4, "lines"),
-        legend.position = "none",
-        text = element_text(size=15)) +
-  scale_x_discrete(name ="Skill",
-                   limits=factor(1:5)) +
-  scale_fill_viridis_d()
-
-
-```
----
-
-
-## Wordcloud
-
-
-.center2[
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-
-
-words <- res$school[nchar(res$school) < 100 & nchar(res$school) > 0]
-words <- gsub("und|unterricht|wissenschaften|bildnerisches","",
-              do.call("c", strsplit(words,";")))
-textplot_wordcloud(dfm(words, remove_punct = TRUE),
-                   min_count = 1,
-                   min_size = 2.5,
-                   color = viridis::viridis(5))
-```
-]
 
 
 ---
 
+
+
+## Qualitative Antworten: Was fehlt?
+
+- Methodisches Arbeiten
+  - Selbstständiges Arbeiten
+  - Exzerpieren
+  - Lese- und Schreibtechniken (lange, komplexe Texte schnell lesen)
+  - Quellen- und Literaturecherche
+
+  
+  
+- Analytische Perspektiven
+  - eigene Positionen entwickeln
+  - Entwicklung von Forschungsfragen
+  - Textargumentation freilegen
+  - Quellen- und Literaturkritik
+  
+  
+
+
+---
+
+
+## Perspektive als Dozent*in
+
+- Methodisches Arbeiten
+  - Wissenschaftliche Methoden sind Bestandteil des Studiums (Maturaarbeit als Chance)
+  - Lese- und Schreibtechniken (Ausdruck, Rechtschreibung)
+  - Grundkompetenzen in digitalen und quantitativen Methoden
+
+
+- Analytische Perspektiven
+  - Eigene Positionen entwickeln
+  - Kritischer Umgang mit Material und Meinungen
+
+
+---
 
 
 ## Qualitative Antworten: Was fehlt?
@@ -196,3 +212,20 @@ out_stripped
 
 
 ---
+
+
+## Durchschnittliche Einschätzung der an der Schule erworbenenen Fähigkeiten
+
+```{r,echo=FALSE, warning=FALSE,message=FALSE}
+gg_avg <- ggplot(data = avg)
+gg_avg + geom_bar(aes(x = variable,
+                      y = avg),
+                  stat = "identity") +
+  coord_flip() +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.spacing = unit(4, "lines"),
+        text = element_text(size=15))
+
+```
+
